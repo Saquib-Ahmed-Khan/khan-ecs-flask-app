@@ -7,14 +7,14 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 615299769479.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
+      - echo Building the Docker image...
       - docker build -t khan-ecs-flask-app .
       - docker tag khan-ecs-flask-app:latest 615299769479.dkr.ecr.us-east-1.amazonaws.com/khan-ecs-flask-repo:latest
   post_build:
     commands:
-      - echo Pushing Docker image...
+      - echo Pushing the Docker image...
       - docker push 615299769479.dkr.ecr.us-east-1.amazonaws.com/khan-ecs-flask-repo:latest
-      - echo Writing imagedefinitions.json...
+      - echo Writing image definitions...
       - printf '[{"name":"khan-container","imageUri":"615299769479.dkr.ecr.us-east-1.amazonaws.com/khan-ecs-flask-repo:latest"}]' > imagedefinitions.json
 
 artifacts:
